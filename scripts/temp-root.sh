@@ -12,7 +12,7 @@
 #         ./temp-root.sh                 # defaults to `id`
 set -u
 
-D="$(cd "$(dirname "$0")" && pwd)"
+D="$(cd "$(dirname "$0")" >/dev/null 2>&1 && pwd)"
 S=$(adb devices -l | awk '/product:SO-02J|model:SO_02J/ {print $1}' | head -1)
 if [ -z "$S" ]; then echo "ERROR: SO-02J not found via adb"; exit 1; fi
 

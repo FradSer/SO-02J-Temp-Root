@@ -1,5 +1,9 @@
 # Debloat notes (SO-02J, 34.1.B.0.336)
 
+> **Use [hide-debloat.md](hide-debloat.md) instead.** The `pm uninstall`
+> method below is not reversible on this build and caused a bootloop.
+> `pm hide` gives the same visible result and rolls back with one command.
+
 ## Method
 
 `pm uninstall -k --user 0 <package>` performed from an ordinary `adb shell`.
