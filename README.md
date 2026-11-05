@@ -15,7 +15,7 @@ stock `run-as` binary.
 
 **Current device state:** recovered from a `com.google.android.packageinstaller`
 bootloop by reflashing stock `34.1.B.0.336` and restoring the verified
-`pre-google-framework` snapshot: **241 visible / 171 hidden / 412 total**,
+`pre-google-framework` snapshot: **240 visible / 172 hidden / 412 total**,
 memory-state root re-applied. Several docs below record intermediate counts
 (150, 243, 263, 268 ...) from earlier passes; those are historical, not the current
 device. See [docs/lessons.md](docs/lessons.md#current-state-recovered) for the
@@ -99,6 +99,7 @@ uid=0(root) gid=0(root) groups=0(root) context=u:r:shell:s0
 | `docs/recovery-packageinstaller.md` | The `packageinstaller` bootloop, every failed software rollback, and the FTF recovery |
 | `docs/lessons.md` | **Start here**: cross-cutting rules, classification signals, verification ladder, failure chronicle, hard boundaries |
 | `docs/lounge-icon.md` | Why a hidden package can still show an icon; launcher shortcut vs package state |
+| `docs/play-store-removal.md` | Play Store removed safely: dependency analysis, rehearsed snapshot, post-reboot functional checks |
 | `scripts/restore-flash.sh` | Reflash the 19 stock `.sin` partitions in S1 Flashmode |
 | `scripts/flashoff.c` | Send S1 `CMD_FLASHMODE_OFF` to boot the phone without a button press after flashing (Linux host only — needs `linux/usbdevice_fs.h`) |
 | `docs/restore-manifest.txt` | **Historical** — per-user uninstalled packages from the superseded `pm uninstall` method |

@@ -17,6 +17,7 @@ com.android.server.telecom
 com.android.smspush
 com.android.soundrecorder
 com.android.stk
+com.android.vending
 com.android.vpndialogs
 com.facebook.appmanager
 com.facebook.katana
