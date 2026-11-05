@@ -47,17 +47,49 @@ Do not keep retrying: each attempt costs another reboot cycle.
    `.ta` files are skipped: the bootloader stays locked and TA/DRM keys are
    untouched. Reflashing takes roughly 3 minutes.
 4. Unplug USB and power on. First boot after a reflash is slow (dexopt).
-5. Verify: `adb shell getprop sys.boot_completed` = `1`, SystemUI present,
-   `pm list packages` back to the stock count.
+5. Exit Flashmode: either unplug USB and power on with the power button, or
+   run `scripts/flashoff.c` (no button press needed).
+6. Verify: `adb shell getprop sys.boot_completed` = `1`, SystemUI present,
+   `pm list packages` back to the stock count. ADB will be unavailable until
+   USB debugging is re-enabled (see below).
 
 This restores the device to stock `34.1.B.0.336`. All per-user uninstalls
 are gone. If you debloat again, stop at the protected set in
 [debloat.md](debloat.md#protected-set-never-remove) and never remove packages
 with Binder-bound service actions or `android.uid.system` shared UID.
 
+## After the reflash: USB debugging is reset
+
+Reflashing `userdata.sin` wipes `/data`, so the USB debugging setting and
+ADB authorisation are reset. The phone enumerates as `0fce:01e8` (MTP only,
+no ADB interface). No computer-side command can turn USB debugging back on
+after a factory reset - it must be done on the device:
+
+1. Settings > About phone > tap **Build number** 7 times.
+2. Settings > Developer options > enable **USB debugging**.
+3. Reconnect USB and accept the RSA prompt.
+
+Use `scripts/flashoff.c` to kick the device out of Flashmode without a button
+press after flashing. It sends the S1 `CMD_FLASHMODE_OFF` command (opcode
+`0x04`, `FLAG3`, zero length, xor checksum +7) over usbfs:
+
+```sh
+gcc -O2 -Wall -o flashoff scripts/flashoff.c   # Linux host with USB passthrough
+./flashoff
+```
+
+Note that USB debugging being reset is expected and is not a fault: the
+firmware itself is intact. Confirm a clean boot with:
+
+```sh
+adb shell getprop sys.boot_completed      # 1
+adb shell 'ps | grep -c com.android.systemui'   # >=1
+adb shell 'pm list packages | wc -l'      # back to the stock count
+```
+
 ## Root after recovery
 
 The memory-only root is lost with every reboot, including this one. Re-run
-`scripts/temp-root.sh` after the device boots; it reboots once to clear the
-Dirty COW page cache, then re-applies the overlay. See
+`scripts/temp-root.sh` after USB debugging is back on; it reboots once to
+clear the Dirty COW page cache, then re-applies the overlay. See
 [persistence.md](persistence.md).
