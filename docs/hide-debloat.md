@@ -71,19 +71,29 @@ print an extra line and corrupt `$ROOT`.
 
 ## Verified result on this device
 
-Starting from the stock 413 packages, 77 were hidden in seven batches of
-20 / 17 / 17 / 9 / 7 / 7 / 2. Every batch passed `REBOOT_VERIFY_PASS`.
+Starting from the stock 413 packages, **96 are hidden** and 317 visible.
+Every batch passed `REBOOT_VERIFY_PASS`. The batches were:
 
-The first four batches (79 packages) covered user-level apps from the
-previously verified removal set. Three later batches added 16 more user-visible
-apps (camera/media suite, AOSP utilities, Docomo store) after a fresh
-`dumpsys package` classification excluded every package with a shared UID,
-`PERSISTENT`, provider, or Binder service binding.
+1. Four batches (63 packages) covering user-level apps from the previously
+   verified removal set: social/Japanese apps, Google entertainment, Sony
+   media utilities, Docomo value-add apps.
+2. Three more batches (16 packages) after a fresh `dumpsys package`
+   classification excluded every package with a shared UID, `PERSISTENT`,
+   provider, or Binder service binding: camera/media suite, AOSP utilities,
+   Docomo store, and two `/data/app` leftovers.
+3. The Japanese launcher/service pass documented in
+   [launcher.md](launcher.md): 15 Docomo services and the two-step default
+   launcher replacement (`dhome` -> `com.sonyericsson.home`).
+
+A failed attempt to hide only `dhome` produced a HOME chooser; that is why
+`launcher.md` records the required order. Check the foreground activity, not
+just package counts, after any launcher change.
 
 ```
-visible=334   hidden-total=413   hidden=79
+visible=317   hidden-total=413   hidden=96
+foreground HOME: com.sonyericsson.home/com.sonymobile.home.HomeActivity
 boot=1  ui=1  home=4  running_svc=73
-fatal=0  uptime 92s -> 128s (6 samples, monotonic)
+fatal=0  uptime 177s -> 213s (6 samples, monotonic)
 ```
 
 `docs/hidden-packages.txt` is generated from the device itself
@@ -99,7 +109,7 @@ Protected packages all confirmed present afterwards:
 `com.google.android.webview`.
 
 A one-package rollback drill went `350 -> 351 -> 350`. The full 63-package
-drill went `334 -> 413 -> 334`, with all four batches re-applied and each
+drill went `317 -> 413 -> 317`, with all four batches re-applied and each
 reboot-verified again. `unhide-all.sh` now refuses a list shorter than the
 number of currently hidden packages.
 

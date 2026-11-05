@@ -76,13 +76,14 @@ uid=0(root) gid=0(root) groups=0(root) context=u:r:shell:s0
 | `docs/temp-root.md` | Payload design, syscall table, SELinux details, build command |
 | `docs/persistence.md` | What survives a reboot and what does not; why root must be re-applied |
 | `docs/debloat.md` | Protected package set, device-admin blocker, post-debloat verification |
-| `docs/hide-debloat.md` | **Recommended**: reversible `pm hide` method, batch + reboot verification, verified 79-package result |
-| `docs/hidden-packages.txt` | The 79 packages hidden with `pm hide`; input to `unhide-all.sh` |
+| `docs/hide-debloat.md` | **Recommended**: reversible `pm hide` method, batch + reboot verification, verified 96-package result |
+| `docs/hidden-packages.txt` | The 96 packages hidden with `pm hide`; input to `unhide-all.sh` |
 | `scripts/hide-batch.sh` | Hide one batch with health checks; records hidden packages |
 | `scripts/unhide-all.sh` | One-command full rollback of every hidden package |
 | `scripts/reboot-verify.sh` | Reboot and confirm boot completes; required after each batch |
 | `docs/recovery.md` | Over-debloat bootloop: symptoms, failed recovery attempts, FTF reflash procedure |
 | `docs/asset-layout.md` | Authoritative asset locations, recovery quick reference, cleanup decisions |
+| `docs/launcher.md` | Replacing the Docomo default launcher with Xperia Home; correct two-step order, Japanese carrier services removed |
 | `scripts/restore-flash.sh` | Reflash the 19 stock `.sin` partitions in S1 Flashmode |
 | `scripts/flashoff.c` | Send S1 `CMD_FLASHMODE_OFF` to boot the phone without a button press after flashing (Linux host only — needs `linux/usbdevice_fs.h`) |
 | `docs/restore-manifest.txt` | **Historical** — per-user uninstalled packages from the superseded `pm uninstall` method |
