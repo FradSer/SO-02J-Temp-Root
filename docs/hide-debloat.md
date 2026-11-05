@@ -109,11 +109,11 @@ Protected packages all confirmed present afterwards:
 `com.google.android.webview`.
 
 A one-package rollback drill went `350 -> 351 -> 350`. The full 63-package
-drill went `317 -> 413 -> 317`, with all four batches re-applied and each
+drill went `350 -> 413 -> 350`, with all four batches re-applied and each
 reboot-verified again. `unhide-all.sh` now refuses a list shorter than the
 number of currently hidden packages.
 
-## What remains (350 packages) and why it stays
+## What remains (317 packages) and why it stays
 
 - 61 resource overlays and permission-defining packages
 - framework packages in `/system/framework`, `android.uid.system` shared-UID
