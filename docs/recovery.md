@@ -1,10 +1,19 @@
 # Recovery from an over-aggressive debloat (bootloop)
 
 This documents a real failure mode observed on this device, so it is not
-repeated. Removing packages that framework binds at boot leaves the phone in
-a reboot loop. Root being memory-only makes this worse: a reboot discards the
-Dirty COW overlay, so there is no escalated shell available to undo the
-change.
+repeated. The bootloop started immediately after the fourth debloat round,
+which removed 31 packages (some AOSP helpers, FeliCa and Qualcomm items).
+
+**The exact root cause was not proven.** The inference is that one or more of
+those packages is needed by framework at boot, but two observations sit
+against it: `fastboot format userdata` succeeded and did not fix the loop, and
+PackageManager was observed rescanning all system APKs during an early-boot
+window. The `dm-req-crypt` layer on `/data` may also have been left
+inconsistent by formatting. Do not treat the package list as a confirmed
+cause; treat it as the trigger to avoid.
+
+Root being memory-only makes recovery harder: a reboot discards the Dirty COW
+overlay, so there is no escalated shell available to undo the change.
 
 ## Symptoms
 
@@ -28,7 +37,7 @@ Is the system running?`).
 | `dpm remove-active-admin` | Only affects the admin list, not the bootloop |
 | Dirty COW back to uid 0 in the early-boot window | Works (`uid=0(root)`), but SELinux still denies `setenforce` and `unlink` on `system_data_file` (`-13 EACCES`) |
 | `fastboot erase userdata` / `fastboot erase cache` | `Command not allowed` (locked bootloader) |
-| `fastboot format userdata` | Succeeds (recreates the filesystem) but the device still bootloops; Sony's `dm-req-crypt` layer and dalvik-cache重建 still fail |
+| `fastboot format userdata` | Succeeds (recreates the filesystem) but the device still bootloops; Sony's `dm-req-crypt` layer and dalvik-cache rebuild still fail |
 | `fastboot flashing unlock`, `oem reboot-flashmode`, `oem poweroff` | `unknown command` on this locked bootloader |
 | `adb reboot recovery` | Device returns to the same early-boot loop |
 
@@ -46,17 +55,27 @@ Do not keep retrying: each attempt costs another reboot cycle.
    reflashes the 19 `.sin` partitions from the stock FTF. Boot delivery and
    `.ta` files are skipped: the bootloader stays locked and TA/DRM keys are
    untouched. Reflashing takes roughly 3 minutes.
-4. Unplug USB and power on. First boot after a reflash is slow (dexopt).
-5. Exit Flashmode: either unplug USB and power on with the power button, or
-   run `scripts/flashoff.c` (no button press needed).
-6. Verify: `adb shell getprop sys.boot_completed` = `1`, SystemUI present,
+4. Exit Flashmode: either unplug USB and power on with the power button, or
+   run `scripts/flashoff.c` (no button press needed). First boot after a
+   reflash is slow (dexopt).
+5. Verify: `adb shell getprop sys.boot_completed` = `1`, SystemUI present,
    `pm list packages` back to the stock count. ADB will be unavailable until
    USB debugging is re-enabled (see below).
 
 This restores the device to stock `34.1.B.0.336`. All per-user uninstalls
-are gone. If you debloat again, stop at the protected set in
+are gone. Verified post-reflash baseline on this device:
+
+```
+boot=1  ui=1  home=4  installed=413
+layers=Visible layers (count = 9)  running_svc=72
+avc=0  crash=0  build=34.1.B.0.336  android=6.0.1
+```
+
+If you debloat again, stop at the protected set in
 [debloat.md](debloat.md#protected-set-never-remove) and never remove packages
 with Binder-bound service actions or `android.uid.system` shared UID.
+Debloat in small batches with a health check after each batch, and verify
+after an actual reboot before continuing.
 
 ## After the reflash: USB debugging is reset
 
@@ -89,7 +108,24 @@ adb shell 'pm list packages | wc -l'      # back to the stock count
 
 ## Root after recovery
 
-The memory-only root is lost with every reboot, including this one. Re-run
-`scripts/temp-root.sh` after USB debugging is back on; it reboots once to
-clear the Dirty COW page cache, then re-applies the overlay. See
-[persistence.md](persistence.md).
+The memory-only root is lost with every reboot, including this one. Once USB
+debugging is back on, the safest path after a reflash is **no reboot at all**:
+the page cache is already clean, so push the two binaries and inject once.
+
+```sh
+adb push dirtycow  /data/local/tmp/dirtycow
+adb push rootshell /data/local/tmp/rootshell
+adb shell 'chmod 755 /data/local/tmp/dirtycow /data/local/tmp/rootshell'
+adb shell 'cd /data/local/tmp && ./dirtycow /system/bin/run-as ./rootshell'
+# feed commands via a pushed file and stdin; always append `exit`
+adb shell '/system/bin/run-as < /data/local/tmp/rootcmd.sh'
+```
+
+Verified result: `uid=0(root) gid=0(root) context=u:r:shell:s0`, `boot=1`,
+`installed=413` unchanged. Four `avc: denied { dyntransition }` lines from
+`run-as` are expected: the payload probes `kernel`, `init`, `zygote` and
+`system_server` contexts before landing on `u:r:shell:s0`. No service deaths.
+
+`scripts/temp-root.sh` remains the general driver; it reboots first to
+guarantee a clean page cache, which is unnecessary right after a reflash.
+See [persistence.md](persistence.md).
