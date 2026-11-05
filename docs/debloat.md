@@ -86,15 +86,52 @@ admin list, but PackageManager keeps a cached device-policy state until a
 reboot — and a reboot drops the memory-only root. Leave this package alone
 unless you are prepared to reflash.
 
-## Post-debloat state observed
+## Round 4: the batch that triggered a bootloop
+
+A fourth round removed 31 more packages from the 226-package state. The
+health check still passed immediately after the batch, but the next reboot
+never completed. **The exact cause was not proven** (see
+[recovery.md](recovery.md)), so treat this whole batch as unverified and do
+not repeat it. The packages were:
 
 ```
-installed packages: 413 -> 226
-SystemUI alive, sys.boot_completed=1, visible layers=7
+com.android.backupconfirm          com.android.calllogbackup
+com.android.captiveportallogin     com.android.printspooler
+com.android.proxyhandler           com.android.sharedstoragebackup
+com.android.smspush                com.android.vpndialogs
+com.android.wallpapercropper       com.felicanetworks.mfc
+com.felicanetworks.mfm             com.felicanetworks.mfs
+com.felicanetworks.mfw.a.boot      com.nttdocomo.android.accountwipe
+com.nttdocomo.android.apnsw        com.nttdocomo.android.atf
+com.nttdocomo.android.idmanager    com.nttdocomo.android.pf.dcmippushaggregator
+com.nttdocomo.android.rwpushcontroller   com.nttdocomo.android.settings.lac
+com.qualcomm.shutdownlistner       com.sonyericsson.androidapp.sehome
+com.sonyericsson.warrantytime      com.sonymobile.android.externalkeyboard
+com.sonymobile.android.externalkeyboardjp
+com.sonymobile.music.googlelyricsplugin
+com.sonymobile.pobox.skin.easy     com.sonymobile.pobox.skin.gummi
+com.sonymobile.pobox.skin.standard com.sonymobile.pobox.skin.wood
+com.sonymobile.themes.sou.cid14.black
+```
+
+Two lessons: a passing health check **before** a reboot does not prove the
+system will boot, and AOSP helper APKs are not automatically safe just
+because they look optional. Recovery required the full FTF reflash in
+[recovery.md](recovery.md).
+
+## State observed before the reflash
+
+```
+installed packages: 413 -> 226 (rounds 1-3), then 195 (round 4)
+SystemUI alive, sys.boot_completed=1, visible layers=9
 running init services=73, AVC denials=0, crash lines=0
 ```
 
+After the reflash the device is back at the stock **413** packages. The
+226/195 figures are history, not the current state.
+
 `scripts/debloat.sh` enforces the protected set and runs a health check
 every 5 removals, stopping immediately if SystemUI, boot, or the launcher
-disappears. Run `scripts/monitor-load.sh load` and
+disappears. That check is necessary but not sufficient: verify after a real
+reboot before starting another batch. Run `scripts/monitor-load.sh load` and
 `scripts/monitor-load.sh health` afterwards to sample system load.
