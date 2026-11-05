@@ -22,8 +22,10 @@ reaches the same visible result without those privileges.
 
 Verified reversibility: `pm hide` moved `com.instagram.android` from the
 enabled list to `-u` only, and `pm unhide` brought it straight back with
-`boot=1 ui=1` unchanged. A full 63-package rollback drill went `350 -> 413`
-with `UNHIDE_DONE n=63 ok=63 fail=0`.
+`boot=1 ui=1` unchanged. A full rollback drill (at that point 63 packages)
+went `350 -> 413` with `UNHIDE_DONE n=63 ok=63 fail=0`; the same four batches
+were then re-applied and each reboot-verified again. The current list has 77
+packages, generated from the device after two further batches.
 
 ## Required discipline
 
