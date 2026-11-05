@@ -51,7 +51,9 @@ uid=0(root) gid=0(root) groups=0(root) context=u:r:shell:s0
 
 - **Reboot loses root.** `scripts/temp-root.sh` reboots first to clear any prior
   Dirty COW overlay, then re-applies it. `dirtycow`'s `copyErrors` self-check
-  silently skips a second overlay on the same dirty page cache.
+  silently skips a second overlay on the same dirty page cache. See
+  [docs/persistence.md](docs/persistence.md) — the scripts are the persistence
+  mechanism, not the root itself.
 - **Restricted capability set.** `CapEff=00000000000000c0` (only
   `CAP_SETUID`/`CAP_SETGID`), and SELinux stays `Enforcing`. Root can run
   commands but cannot write `shell_data_file`, read raw block devices, or call
@@ -72,6 +74,12 @@ uid=0(root) gid=0(root) groups=0(root) context=u:r:shell:s0
 | `docs/firmware.md` | Firmware identity, sources, integrity verification |
 | `docs/flashing.md` | S1 Flashmode downgrade procedure and pitfalls |
 | `docs/temp-root.md` | Payload design, syscall table, SELinux details, build command |
+| `docs/persistence.md` | What survives a reboot and what does not; why root must be re-applied |
+| `docs/debloat.md` | Protected package set, device-admin blocker, post-debloat verification |
+| `docs/restore-manifest.txt` | Per-user uninstalled packages and their APK paths |
+| `docs/all-system-apks.txt` | Full preinstalled package/path inventory (text only) |
+| `scripts/debloat.sh` | Vetted package-list driver with a health check every 5 removals |
+| `scripts/monitor-load.sh` | Two load/stability monitors, 12 samples each |
 
 Third-party binaries (`dirtycow`, `xflasher`, FTF archives) are **not**
 redistributed here. Obtain them from their upstream projects.

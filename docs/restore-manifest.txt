@@ -1,0 +1,37 @@
+# SO-02J debloat restore manifest
+# Device: Sony Xperia X Compact SO-02J, firmware 34.1.B.0.336 (Android 6.0.1)
+# Method used: `pm uninstall -k --user 0 <package>` (per-user, APK stays in the
+# read-only /system or /oem partition; the package still appears in `pm list packages -u`).
+#
+# RESTORE: on this build `pm install -r` does NOT re-register system packages,
+# and there is no `cmd` / `install-existing`. The reliable restore is to reflash
+# the stock FTF (SO-02J_34.1.B.0.336_1305-8403_R13B.ftf) via S1 Flashmode;
+# see docs/flashing.md. In a full-capability root context `pm install -r <apk>`
+# may also work. Reboot alone does NOT restore per-user uninstalls.
+#
+# To verify state: pm list packages -u | grep <package>
+#                  pm list packages   | grep <package>   (should be absent)
+
+com.android.chrome                          /system/app/Chrome/Chrome.apk
+com.google.android.apps.photos              /system/app/Photos/Photos.apk
+com.google.android.music                    /system/app/Music2/Music2.apk
+com.google.android.videos                   /system/app/Videos/Videos.apk
+com.nttdocomo.android.areamail              /oem/priv-app/AreaMail_sha2/AreaMail_sha2.apk
+com.nttdocomo.android.devicehelp            /oem/priv-app/DeviceHelp_sha2/DeviceHelp_sha2.apk
+com.nttdocomo.android.initialization        /oem/app/DocomoInitialization_sha2/DocomoInitialization_sha2.apk
+com.nttdocomo.android.mediaplayer           /oem/priv-app/MediaPlayer_fw_mm_sha2/MediaPlayer_fw_mm_sha2.apk
+com.nttdocomo.android.sdcardbackup          /oem/priv-app/SDCardBackup_sha2/SDCardBackup_sha2.apk
+com.nttdocomo.android.socialphonebook       /oem/app/SocialPhonebookService_sha2/SocialPhonebookService_sha2.apk
+com.rsupport.rsperm.ntt                     /system/app/rspermntt_somc/rspermntt_somc.apk
+com.sonyericsson.album                      /system/priv-app/album-albumLive-release/album-albumLive-release.apk
+com.sonymobile.moviecreator                 /system/priv-app/SomcMovieCreator-release/SomcMovieCreator-release.apk
+com.sonymobile.moviecreator.rmm             /system/app/SomcMovieCreatorRmm-release/SomcMovieCreatorRmm-release.apk
+com.swiftkey.swiftkeyconfigurator           /system/app/com.swiftkey.swiftkeyconfigurator/com.swiftkey.swiftkeyconfigurator.apk
+jp.co.nttdocomo.carriermail                 /oem/priv-app/docomomail_downloader_sha2/docomomail_downloader_sha2.apk
+jp.co.nttdocomo.saigaiban                   /oem/priv-app/saigaiban-3a-ver11.20.0_sha2/saigaiban-3a-ver11.20.0_sha2.apk
+
+# Deliberately NOT touched (critical): com.android.systemui, launcher/home,
+# keyboard (com.touchtype.swiftkey), phone/telephony/settings providers,
+# com.sonymobile.superstamina (its removal previously crashed SystemUI),
+# com.sonyericsson.android.servicemenu, all *.res.overlay / *.overlay packages,
+# com.sonymobile.xperiaservices, Google Play services / Play Store / WebView.
