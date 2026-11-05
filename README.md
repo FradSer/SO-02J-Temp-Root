@@ -76,8 +76,8 @@ uid=0(root) gid=0(root) groups=0(root) context=u:r:shell:s0
 | `docs/temp-root.md` | Payload design, syscall table, SELinux details, build command |
 | `docs/persistence.md` | What survives a reboot and what does not; why root must be re-applied |
 | `docs/debloat.md` | Protected package set, device-admin blocker, post-debloat verification |
-| `docs/hide-debloat.md` | **Recommended**: reversible `pm hide` method, batch + reboot verification, verified 77-package result |
-| `docs/hidden-packages.txt` | The 77 packages hidden with `pm hide`; input to `unhide-all.sh` |
+| `docs/hide-debloat.md` | **Recommended**: reversible `pm hide` method, batch + reboot verification, verified 79-package result |
+| `docs/hidden-packages.txt` | The 79 packages hidden with `pm hide`; input to `unhide-all.sh` |
 | `scripts/hide-batch.sh` | Hide one batch with health checks; records hidden packages |
 | `scripts/unhide-all.sh` | One-command full rollback of every hidden package |
 | `scripts/reboot-verify.sh` | Reboot and confirm boot completes; required after each batch |

@@ -24,7 +24,7 @@ Verified reversibility: `pm hide` moved `com.instagram.android` from the
 enabled list to `-u` only, and `pm unhide` brought it straight back with
 `boot=1 ui=1` unchanged. A full rollback drill (at that point 63 packages)
 went `350 -> 413` with `UNHIDE_DONE n=63 ok=63 fail=0`; the same four batches
-were then re-applied and each reboot-verified again. The current list has 77
+were then re-applied and each reboot-verified again. The current list has 79
 packages, generated from the device after two further batches.
 
 ## Required discipline
@@ -71,19 +71,19 @@ print an extra line and corrupt `$ROOT`.
 
 ## Verified result on this device
 
-Starting from the stock 413 packages, 77 were hidden in six batches of
-20 / 17 / 17 / 9 / 7 / 7. Every batch passed `REBOOT_VERIFY_PASS`.
+Starting from the stock 413 packages, 77 were hidden in seven batches of
+20 / 17 / 17 / 9 / 7 / 7 / 2. Every batch passed `REBOOT_VERIFY_PASS`.
 
-The first four batches (77 packages) covered user-level apps from the
-previously verified removal set. Two later batches added 14 more user-visible
+The first four batches (79 packages) covered user-level apps from the
+previously verified removal set. Three later batches added 16 more user-visible
 apps (camera/media suite, AOSP utilities, Docomo store) after a fresh
 `dumpsys package` classification excluded every package with a shared UID,
 `PERSISTENT`, provider, or Binder service binding.
 
 ```
-visible=336   hidden-total=413   hidden=77
+visible=334   hidden-total=413   hidden=79
 boot=1  ui=1  home=4  running_svc=73
-fatal=0  uptime 69s -> 119s (8 samples, monotonic)
+fatal=0  uptime 92s -> 128s (6 samples, monotonic)
 ```
 
 `docs/hidden-packages.txt` is generated from the device itself
@@ -99,7 +99,7 @@ Protected packages all confirmed present afterwards:
 `com.google.android.webview`.
 
 A one-package rollback drill went `350 -> 351 -> 350`. The full 63-package
-drill went `336 -> 413 -> 336`, with all four batches re-applied and each
+drill went `334 -> 413 -> 334`, with all four batches re-applied and each
 reboot-verified again. `unhide-all.sh` now refuses a list shorter than the
 number of currently hidden packages.
 

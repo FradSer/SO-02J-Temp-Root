@@ -1,3 +1,4 @@
+com.amazon.kindle
 com.amazon.mShop.android.shopping
 com.android.apps.tag
 com.android.calculator2
@@ -23,6 +24,7 @@ com.mobileselect.kicker
 com.mobisystems.fileman
 com.nextbit.app
 com.nttdocomo.android.anmane2
+com.nttdocomo.android.cloudstorageservice
 com.nttdocomo.android.dcmvoicerecognition
 com.nttdocomo.android.dpoint
 com.nttdocomo.android.iconcier
