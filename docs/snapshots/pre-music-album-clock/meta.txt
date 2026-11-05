@@ -1,0 +1,8 @@
+# snapshot pre-music-album-clock
+date=2026-11-05T12:54:36Z
+device=SO-02J (serial omitted)
+build=34.1.B.0.336 android=6.0.1 boot=1
+visible=     246
+hidden=     167
+universe=     413
+foreground_home=  mFocusedApp=AppWindowToken{31d8a99 token=Token{646719d ActivityRecord{1029874 u0 com.sonyericsson.home/com.sonymobile.home.HomeActivity t29}}}
