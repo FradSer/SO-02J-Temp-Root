@@ -165,3 +165,6 @@ com.android.server.telecom
 com.android.carrierconfig
 com.sonyericsson.android.omacp
 com.android.phone
+com.sonyericsson.music
+com.sonyericsson.album
+com.sonyericsson.organizer

@@ -1,0 +1,3 @@
+activity_manager_constants=max_cached_processes=4
+app_idle_constants=idle_duration=94610000000
+development_settings_enabled=1
