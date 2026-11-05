@@ -7,17 +7,17 @@ delete the only working recovery path.
 
 | Asset | Authoritative location | Also copied to |
 |---|---|---|
-| Method, scripts, package lists | Public GitHub repo `FradSer/SO-02J-Temp-Root` | local clone, host `~/Downloads/so02j-root`, NAS `/mnt/user/appdata/so02j-flash` |
-| Local git clone | `~/Downloads/SO-02J-Temp-Root` (persistent, not `/tmp`) | — |
-| Stock FTF (2.4 GB) | `~/Downloads/SO-02J_34.1.B.0.336_1305-8403_R13B.ftf` | NAS `firmware/` |
+| Method, scripts, package lists | Public GitHub repo `FradSer/SO-02J-Temp-Root` | local clone, host working dir, NAS share |
+| Local git clone | a persistent local clone (outside `/tmp`) | — |
+| Stock FTF (2.4 GB) | local FTF copy | NAS `firmware/` |
 | Unpacked `.sin` partitions (19) | OrbStack guest `so02j:/opt/so02j/work` | NAS `work/` |
 | Built `xflasher` (Linux usbfs) | OrbStack guest `/usr/local/bin/xflasher` | NAS `src/xflasher` (amd64 build) |
-| `xflasher` source | `~/Downloads/so02j-src/xflasher_v23.c` | NAS `src/` |
-| APK backups (175 MB) | `~/Downloads/so02j-root/backup-apks/` | NAS `backup-apks/` |
+| `xflasher` source | host `so02j-src/` | NAS `src/` |
+| APK backups (175 MB) | host `backup-apks/` | NAS `backup-apks/` |
 | Hidden package list (63) | repo `docs/hidden-packages.txt` | host, NAS, device `/data/local/tmp/hidden.txt` |
 
-The local clone used to live in `/tmp/so02j-repo`; it was moved out of `/tmp`
-so a reboot cannot wipe the only local git working copy.
+The local clone originally lived in `/tmp`; it was moved to a persistent
+location so a reboot cannot wipe the only local git working copy.
 
 ## Recovery paths, shortest first
 
