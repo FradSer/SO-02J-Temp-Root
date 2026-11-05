@@ -69,14 +69,25 @@ print an extra line and corrupt `$ROOT`.
 
 ## Verified result on this device
 
-Starting from the stock 413 packages, 63 were hidden in four batches of
-20 / 17 / 17 / 9. Every batch passed `REBOOT_VERIFY_PASS`:
+Starting from the stock 413 packages, 77 were hidden in six batches of
+20 / 17 / 17 / 9 / 7 / 7. Every batch passed `REBOOT_VERIFY_PASS`.
+
+The first four batches (77 packages) covered user-level apps from the
+previously verified removal set. Two later batches added 14 more user-visible
+apps (camera/media suite, AOSP utilities, Docomo store) after a fresh
+`dumpsys package` classification excluded every package with a shared UID,
+`PERSISTENT`, provider, or Binder service binding.
 
 ```
-visible=350   hidden-total=413
-boot=1  ui=1  home=4  running_svc=73  layers=7
-fatal=0  avc=0  uptime 98s -> 171s (10 samples, monotonic)
+visible=336   hidden-total=413   hidden=77
+boot=1  ui=1  home=4  running_svc=73
+fatal=0  uptime 69s -> 119s (8 samples, monotonic)
 ```
+
+`docs/hidden-packages.txt` is generated from the device itself
+(`pm list packages -u` minus `pm list packages`) so the rollback list can
+never drift from reality. The same file is staged on the device, the host and
+the NAS, with identical SHA-1.
 
 Protected packages all confirmed present afterwards:
 `com.android.systemui`, `com.android.settings`, `com.android.phone`,
@@ -86,8 +97,9 @@ Protected packages all confirmed present afterwards:
 `com.google.android.webview`.
 
 A one-package rollback drill went `350 -> 351 -> 350`. The full 63-package
-drill went `350 -> 413 -> 350`, with all four batches re-applied and each
-reboot-verified again.
+drill went `336 -> 413 -> 336`, with all four batches re-applied and each
+reboot-verified again. `unhide-all.sh` now refuses a list shorter than the
+number of currently hidden packages.
 
 ## What remains (350 packages) and why it stays
 
