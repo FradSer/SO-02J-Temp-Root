@@ -68,14 +68,18 @@ own private actions. The real exclusion signals are:
 2. `PERSISTENT`
 3. declared `ContentProvider`
 4. the seven explicitly Binder-bound services identified earlier
-5. membership in the bootloop trigger batch or its families
-6. resource overlays / permission definitions
+5. resource overlays / permission definitions
+
+The bootloop trigger batch is **not** an automatic exclusion under `pm hide`:
+[trigger-batch-revisited.md](trigger-batch-revisited.md) re-tested 11 of its
+members in small batches and all hid cleanly. Treat it as a reason for extra
+caution (smaller batches, one reboot check per batch), not a hard rule.
 
 Anything with none of these can be tried in a small `pm hide` batch followed
 by `scripts/reboot-verify.sh`. `pm hide` is reversible, so a bad batch costs
 one reboot, not a reflash.
 
-## Verified final state
+## Verified final state (historical snapshot of that pass)
 
 ```
 visible=283   hidden=130   total=413

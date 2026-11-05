@@ -33,10 +33,14 @@ packages, generated from the device after two further batches.
    with `sharedUser=`, `PRIVILEGED`, `PERSISTENT`, a declared provider, or a
    service action in `dumpsys package`'s Service Resolver Table. Also keep the
    [protected set](debloat.md#protected-set-never-remove).
-2. **Never repeat the round-4 batch** listed in
-   [debloat.md](debloat.md#round-4-the-batch-that-triggered-a-bootloop), and
-   exclude the same families (themes, skins, style/portrait resources,
-   launchers, IME, provisioning, FeliCa, lockscreen, wallpaper/theme pickers).
+2. **Do not remove framework-bound packages.** Exclude shared UIDs,
+   `PERSISTENT`, declared providers, resource overlays, permission
+   definitions, and active device admins. The old "never repeat the round-4
+   batch" rule applied to irreversible `pm uninstall`; with reversible
+   `pm hide` and per-batch reboot verification, most of that batch proved
+   safe — see [trigger-batch-revisited.md](trigger-batch-revisited.md).
+   Still avoid themes, skins, style/portrait resources, launchers, IME, and
+   provisioning families, which were never re-tested.
 3. **Hide in small batches** (9-20 packages), with a health check every 5.
 4. **Reboot and verify after every batch.** A green health check before a
    reboot proved nothing last time. Check `sys.boot_completed=1`, SystemUI,
@@ -90,10 +94,10 @@ A failed attempt to hide only `dhome` produced a HOME chooser; that is why
 just package counts, after any launcher change.
 
 ```
-visible=283   hidden-total=413   hidden=130
+visible=268   hidden-total=413   hidden=145
 foreground HOME: com.sonyericsson.home/com.sonymobile.home.HomeActivity
 boot=1  ui=1  home=4  running_svc=73
-fatal=0  uptime 82s -> 116s (6 samples, monotonic)
+fatal=0  uptime 109s -> 144s (6 samples, monotonic)
 ```
 
 `docs/hidden-packages.txt` is generated from the device itself
@@ -113,7 +117,7 @@ drill went `350 -> 413 -> 350`, with all four batches re-applied and each
 reboot-verified again. `unhide-all.sh` now refuses a list shorter than the
 number of currently hidden packages.
 
-## What remains (283 packages) and why it stays
+## What remains (268 packages) and why it stays
 
 - 61 resource overlays and permission-defining packages
 - framework packages in `/system/framework`, `android.uid.system` shared-UID
