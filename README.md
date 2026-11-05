@@ -13,13 +13,13 @@ stock `run-as` binary.
 > the Trim Area (TA / DRM keys) is never modified. Do not use this on devices
 > you are not authorised to test.
 
-**Current device state:** the phone was reflashed to stock `34.1.B.0.336`
-after a `com.google.android.packageinstaller` bootloop. It is at 413 visible
-packages with USB debugging not yet re-enabled. Several docs below record
-package counts from *before* that reflash (150, 243, 263, 268 ...). Those are
-historical states, not the current device. See
-[docs/lessons.md](docs/lessons.md#current-state) for the exact state and the
-restore command.
+**Current device state:** recovered from a `com.google.android.packageinstaller`
+bootloop by reflashing stock `34.1.B.0.336` and restoring the verified
+`pre-google-framework` snapshot: **243 visible / 170 hidden / 413 total**,
+memory-state root re-applied. Several docs below record intermediate counts
+(150, 263, 268 ...) from earlier passes; those are historical, not the current
+device. See [docs/lessons.md](docs/lessons.md#current-state-recovered) for the
+full recovery sequence and verified state.
 
 ## Why not KernelSU / Magisk
 

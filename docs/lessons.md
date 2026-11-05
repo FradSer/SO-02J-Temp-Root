@@ -174,11 +174,36 @@ needs the USB cable physically unplugged to leave Flashmode.
 - Sanitize public artifacts: no serials, host paths, internal names or tokens.
 - When a check fails, fix the check's definition as well as the state.
 
-## Current state
+## Current state (recovered)
 
-The device was reflashed to stock `34.1.B.0.336` after bootloop #4. At the
-time of writing it enumerates as MTP (`0x01e8`) with USB debugging not yet
-re-enabled, so adb is offline. Once USB debugging is back, restore the exact
-pre-failure state with `docs/snapshots/pre-google-framework/restore.sh`
-(243 visible / 170 hidden / `max_cached_processes=4`), then re-apply the
-memory-state root with `scripts/temp-root.sh`.
+Bootloop #4 was recovered end to end:
+
+1. Reflashed stock `34.1.B.0.336` in S1 Flashmode (19 `.sin`, TA skipped,
+   ~190 s). The phone stayed in Flashmode until the USB cable was physically
+   unplugged; `FLASHOFF_SENT` alone did not boot it.
+2. Re-enabled USB debugging on the device (a reflash wipes `/data`).
+3. Ran `docs/snapshots/pre-google-framework/restore.sh` — 170 packages
+   re-hidden. Both `visible.txt` and `hidden.txt` matched the snapshot
+   exactly, and all three recorded settings were restored.
+4. `scripts/reboot-verify.sh` passed after the restore, confirming that a
+   snapshot recovery also needs a real reboot check.
+5. Regenerated `hidden-packages.txt` from the device (identical to the
+   snapshot), rebuilt the 170-line device-side `restore-all.sh`, and re-applied
+   the memory-state root.
+
+Verified final state:
+
+```
+boot=1  ui=1  home=4  visible=243  universe=413  hidden=170
+foreground HOME: com.sonyericsson.home/com.sonymobile.home.HomeActivity
+running_svc=73  fatal=0  uptime 92s -> 127s (6 samples, monotonic)
+uid=0(root) gid=0(root) context=u:r:shell:s0
+activity_manager_constants=max_cached_processes=4
+com.google.android.packageinstaller: visible (restored)
+hidden-packages.txt: identical SHA-1 in repo / host / NAS / device
+```
+
+`com.google.android.packageinstaller` is deliberately visible again — it is
+the package whose removal caused bootloop #4. The Google services framework
+pass that preceded it is **not** restored; that work was rolled back by the
+reflash and is documented as a failure, not as a desired state.
