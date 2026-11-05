@@ -110,6 +110,12 @@ Cannot (SELinux still Enforcing, capability set limited):
 - write `shell_data_file` — `touch /data/local/tmp/x` → permission denied
 - read raw block devices — `dd if=/dev/block/.../TA` → permission denied
 - exec `shell_exec` from the `runas` domain without first switching context
+- run `pm` from the escalated shell — it aborts (`Aborted (core dumped)`),
+  so package counts such as `pm list packages | wc -l` return 0. Verify
+  package state from an ordinary `adb shell` instead.
+- re-inject over an already-read page cache — Dirty COW's `copyErrors`
+  self-check silently skips the overlay. `scripts/temp-root.sh` reboots first;
+  if injecting by hand after the device has been used, reboot before retrying.
 
 The earlier `backupTA.sh` chain (Flashtool's `dirtycow` + `exploitta` +
 `dumpta`) failed on this firmware with `Illegal instruction (core dumped)`
