@@ -194,7 +194,7 @@ Bootloop #4 was recovered end to end:
 Verified final state:
 
 ```
-boot=1  ui=1  home=4  visible=243  universe=413  hidden=170
+boot=1  ui=1  home=4  visible=241  universe=412  hidden=171
 foreground HOME: com.sonyericsson.home/com.sonymobile.home.HomeActivity
 running_svc=73  fatal=0  uptime 92s -> 127s (6 samples, monotonic)
 uid=0(root) gid=0(root) context=u:r:shell:s0

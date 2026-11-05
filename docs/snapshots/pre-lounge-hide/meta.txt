@@ -1,0 +1,8 @@
+# snapshot pre-lounge-hide
+date=2026-11-05T15:48:35Z
+device=SO-02J (serial omitted)
+build=34.1.B.0.336 android=6.0.1 boot=1
+visible=     243
+hidden=     170
+universe=     413
+foreground_home=  mFocusedApp=AppWindowToken{fa0169 token=Token{b713a2 ActivityRecord{fca1b6d u0 com.sonyericsson.home/com.sonymobile.home.HomeActivity t16}}}

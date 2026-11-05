@@ -134,6 +134,7 @@ com.sonymobile.email
 com.sonymobile.entrance
 com.sonymobile.exchange
 com.sonymobile.fota.service
+com.sonymobile.getmore
 com.sonymobile.getmore.client
 com.sonymobile.gettoknowit
 com.sonymobile.imeibarcode
