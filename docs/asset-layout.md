@@ -51,10 +51,10 @@ packages were hidden. Always use the full `docs/hidden-packages.txt`.
   tested `xflasher` binary and the 19 unpacked partitions needed for a
   reflash. Stopping it would remove the fastest hardware-recovery path.
 
-## Verification after cleanup
+## Verification after cleanup (current state)
 
 ```
-boot=1 ui=1 home=4 visible=263 total=413 svc=73 fatal=0
+boot=1 ui=1 home=4 visible=240 total=412 svc=73 fatal=0
 uid=0(root) gid=0(root) context=u:r:shell:s0
 hidden-packages.txt: identical SHA-1 in repo / host / NAS / device
 unhide-all.sh: refuses a stale short list; 63-package rollback drill

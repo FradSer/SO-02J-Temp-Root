@@ -59,7 +59,7 @@ When a user says "an app is still there", distinguish three different things:
 app would also work but resets the whole desktop layout, so the UI removal is
 preferable.
 
-## Verified final state
+## Verified state (historical snapshot, after the Lounge shortcut removal)
 
 ```
 visible=241   hidden=171   universe=412

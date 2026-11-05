@@ -94,10 +94,10 @@ A failed attempt to hide only `dhome` produced a HOME chooser; that is why
 just package counts, after any launcher change.
 
 ```
-visible=263   hidden-total=413   hidden=150
+visible=240   hidden-total=412   hidden=172
 foreground HOME: com.sonyericsson.home/com.sonymobile.home.HomeActivity
 boot=1  ui=1  home=4  running_svc=73
-fatal=0  uptime 155s -> 190s (6 samples, monotonic)
+fatal=0  uptime 98s -> 153s (8 samples, monotonic)
 ```
 
 `docs/hidden-packages.txt` is generated from the device itself

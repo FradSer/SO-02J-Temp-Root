@@ -122,10 +122,17 @@ Three real bugs were found only by rehearsing:
 | 3 | hide `android.uid.phone` group, leaving `com.android.phone` | "Unfortunately, com.android.phone has stopped" dialog | hide `com.android.phone` itself | a shared-UID group should be handled as a unit |
 | 4 | hide `com.google.android.packageinstaller` | bootloop | `pm`/`fastboot` all blocked; FTF reflash | the system installer is needed while PackageManager starts |
 | 5 | `reboot-verify.sh` counted `"has died"` | false `REBOOT_VERIFY_FAIL` | strict regex | align check definitions across scripts |
+| 6 | "Xperia Lounge Japan" icon stayed after `entrance` was hidden | stale drawer shortcut | long-press -> red X -> Uninstall | a hidden package is not a removed launcher shortcut; see [lounge-icon.md](lounge-icon.md) |
+| 7 | `pm hide` on an already-hidden package used as a snapshot rehearsal | rehearsal claimed success but changed nothing | redo with `pm unhide` (241 -> 242 -> 241) | a rehearsal must produce a real state change; see [play-store-removal.md](play-store-removal.md) |
 
 The exact root cause of bootloop #1 was never proven: `fastboot format userdata`
 did not fix it, which argues against per-user state alone. `recovery.md` keeps
 that uncertainty explicit. Do not convert an inference into a fact.
+
+Bootloop #4 was recovered fully and the exact pre-failure state was restored
+from the verified `pre-google-framework` snapshot. That recovery is the model
+for any future incident: reflash -> re-enable USB debugging -> `restore.sh`
+-> `reboot-verify.sh` -> regenerate rollback assets -> re-apply root.
 
 ## 8. Hard boundaries
 
@@ -141,6 +148,11 @@ Never hide:
   already hidden, making them orphans)
 - active device admins (`wipe`, `remotelock`); Android 6 `dpm` has no
   `remove-active-admin`
+
+The boundary is per-package, not per-vendor: `com.android.vending` (Play
+Store) is a Google package that hid cleanly, while
+`com.google.android.packageinstaller` is a Google package that bootlooped the
+device. Classify each package on its own dependencies.
 
 ## 9. Recovery priority, shortest first
 
@@ -173,8 +185,18 @@ needs the USB cable physically unplugged to leave Flashmode.
 - Mark historical snapshots as historical; keep active numbers current.
 - Sanitize public artifacts: no serials, host paths, internal names or tokens.
 - When a check fails, fix the check's definition as well as the state.
+- Before a risky single-package change, classify dependencies first (shared
+  UID, `PERSISTENT`, provider, preferred activities, `usesLibrary`), take and
+  **rehearse** a snapshot, commit it, then hide one package and check for
+  crash dialogs, `FATAL`/`ANR`/`avc`, dependent crash loops and the actual
+  foreground Activity. A screenshot is required when the UI changed.
+- Counts are evidence: diff `pm list packages -u` before and after any
+  launcher uninstall action. That is how an unexpected `sehome` removal was
+  found rather than assumed.
 
-## Current state (recovered)
+## Current state
+
+### Recovery sequence (historical)
 
 Bootloop #4 was recovered end to end:
 
@@ -187,23 +209,35 @@ Bootloop #4 was recovered end to end:
    exactly, and all three recorded settings were restored.
 4. `scripts/reboot-verify.sh` passed after the restore, confirming that a
    snapshot recovery also needs a real reboot check.
-5. Regenerated `hidden-packages.txt` from the device (identical to the
-   snapshot), rebuilt the 170-line device-side `restore-all.sh`, and re-applied
-   the memory-state root.
+5. Regenerated `hidden-packages.txt` from the device, rebuilt the device-side
+   `restore-all.sh`, and re-applied the memory-state root.
 
-Verified final state:
+### Changes since the recovery
+
+- `com.sonymobile.getmore` hidden; the stale Xperia Lounge Japan drawer
+  shortcut removed via launcher edit mode. The launcher's uninstall action
+  also removed `com.sonyericsson.androidapp.sehome` from `/data/app`, so the
+  package universe went from 413 to **412**. See
+  [lounge-icon.md](lounge-icon.md).
+- `com.android.vending` (Play Store) hidden after a dependency analysis and a
+  rehearsed snapshot. See [play-store-removal.md](play-store-removal.md).
+
+### Verified state
 
 ```
 boot=1  ui=1  home=4  visible=240  universe=412  hidden=172
 foreground HOME: com.sonyericsson.home/com.sonymobile.home.HomeActivity
-running_svc=73  fatal=0  uptime 92s -> 127s (6 samples, monotonic)
+running_svc=73  fatal=0  anr=0  avc=0  Application Error dialogs=0
+uptime 98s -> 153s (8 samples, monotonic)
 uid=0(root) gid=0(root) context=u:r:shell:s0
 activity_manager_constants=max_cached_processes=4
 com.google.android.packageinstaller: visible (restored)
+com.android.vending: hidden
 hidden-packages.txt: identical SHA-1 in repo / host / NAS / device
 ```
 
-`com.google.android.packageinstaller` is deliberately visible again — it is
-the package whose removal caused bootloop #4. The Google services framework
-pass that preceded it is **not** restored; that work was rolled back by the
-reflash and is documented as a failure, not as a desired state.
+`com.google.android.packageinstaller` is deliberately visible — it is the
+package whose removal caused bootloop #4 and it must stay that way. The bulk
+Google-services-framework pass was rolled back by the reflash and is recorded
+as a failure, not a desired state; Play Store was later removed on its own
+merits with a safe, verified procedure. GMS, GSF and WebView remain visible.

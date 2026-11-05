@@ -80,7 +80,7 @@ A screenshot confirmed the lockscreen/SystemUI was intact.
 `com.sonymobile.providers.topcontacts`, and
 `com.sonymobile.advancedwidget.topcontacts` (shares the launcher UID).
 
-## Verified final state
+## Verified state (historical snapshot, after the Docomo Phonebook pass)
 
 ```
 visible=263   hidden=150   total=413
