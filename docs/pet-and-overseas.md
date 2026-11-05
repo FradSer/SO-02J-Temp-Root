@@ -85,7 +85,7 @@ device unchanged. This is the same blocker that made
 not worth forcing: disabling the admin needs a reboot, which drops the
 memory-only root, and removing it gains nothing essential.
 
-## Verified final state
+## Verified final state (historical snapshot of that pass)
 
 ```
 visible=293   hidden=120   total=413
