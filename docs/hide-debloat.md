@@ -90,10 +90,10 @@ A failed attempt to hide only `dhome` produced a HOME chooser; that is why
 just package counts, after any launcher change.
 
 ```
-visible=317   hidden-total=413   hidden=96
+visible=293   hidden-total=413   hidden=120
 foreground HOME: com.sonyericsson.home/com.sonymobile.home.HomeActivity
 boot=1  ui=1  home=4  running_svc=73
-fatal=0  uptime 177s -> 213s (6 samples, monotonic)
+fatal=0  uptime 92s -> 127s (6 samples, monotonic)
 ```
 
 `docs/hidden-packages.txt` is generated from the device itself
@@ -113,7 +113,7 @@ drill went `350 -> 413 -> 350`, with all four batches re-applied and each
 reboot-verified again. `unhide-all.sh` now refuses a list shorter than the
 number of currently hidden packages.
 
-## What remains (317 packages) and why it stays
+## What remains (293 packages) and why it stays
 
 - 61 resource overlays and permission-defining packages
 - framework packages in `/system/framework`, `android.uid.system` shared-UID

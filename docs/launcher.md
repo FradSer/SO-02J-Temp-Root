@@ -97,6 +97,10 @@ adb shell am start -a android.intent.action.MAIN \
 
 ## Final state after this pass
 
+Historical snapshot at the end of the launcher pass. Later passes
+([pet-and-overseas.md](pet-and-overseas.md)) brought this to
+`visible=293 hidden=120`.
+
 ```
 visible=317  hidden=96  total=413
 boot=1  ui=1  home=4  running_svc=73  fatal=0
