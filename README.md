@@ -13,6 +13,14 @@ stock `run-as` binary.
 > the Trim Area (TA / DRM keys) is never modified. Do not use this on devices
 > you are not authorised to test.
 
+**Current device state:** the phone was reflashed to stock `34.1.B.0.336`
+after a `com.google.android.packageinstaller` bootloop. It is at 413 visible
+packages with USB debugging not yet re-enabled. Several docs below record
+package counts from *before* that reflash (150, 243, 263, 268 ...). Those are
+historical states, not the current device. See
+[docs/lessons.md](docs/lessons.md#current-state) for the exact state and the
+restore command.
+
 ## Why not KernelSU / Magisk
 
 | Blocker | Evidence |
@@ -88,6 +96,8 @@ uid=0(root) gid=0(root) groups=0(root) context=u:r:shell:s0
 | `docs/vendor-services.md` | Sony vendor services removed; why shared-UID / PERSISTENT / provider packages must stay |
 | `docs/trigger-batch-revisited.md` | Re-testing the former bootloop batch with reversible `pm hide`; why device admins still block it |
 | `docs/docomo-phonebook.md` | Removing the Docomo Phonebook; why preferred contact/dial handlers need a functional check |
+| `docs/recovery-packageinstaller.md` | The `packageinstaller` bootloop, every failed software rollback, and the FTF recovery |
+| `docs/lessons.md` | **Start here**: cross-cutting rules, classification signals, verification ladder, failure chronicle, hard boundaries |
 | `scripts/restore-flash.sh` | Reflash the 19 stock `.sin` partitions in S1 Flashmode |
 | `scripts/flashoff.c` | Send S1 `CMD_FLASHMODE_OFF` to boot the phone without a button press after flashing (Linux host only — needs `linux/usbdevice_fs.h`) |
 | `docs/restore-manifest.txt` | **Historical** — per-user uninstalled packages from the superseded `pm uninstall` method |
