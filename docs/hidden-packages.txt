@@ -92,6 +92,10 @@ com.sony.tvsideview.videoph
 com.sonyericsson.android.addoncamera.artfilter
 com.sonyericsson.android.camera
 com.sonyericsson.android.camera3d
+com.sonyericsson.android.contactpicker3
+com.sonyericsson.android.socialphonebook
+com.sonyericsson.android.socialphonebook.product.res.overlay
+com.sonyericsson.android.socialphonebook.res.overlay_305
 com.sonyericsson.autopoweroffservice
 com.sonyericsson.fmradio
 com.sonyericsson.photoeditor
@@ -121,6 +125,7 @@ com.sonymobile.moviecreator.rmm
 com.sonymobile.music.wikipediapluginjpn
 com.sonymobile.music.youtubekaraokeplugin
 com.sonymobile.music.youtubeplugin
+com.sonymobile.overlay.socialphonebook
 com.sonymobile.packagecourier
 com.sonymobile.sdcardtransfer
 com.sonymobile.simplehome

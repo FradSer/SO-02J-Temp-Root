@@ -14,7 +14,7 @@ delete the only working recovery path.
 | Built `xflasher` (Linux usbfs) | OrbStack guest `/usr/local/bin/xflasher` | NAS `src/xflasher` (amd64 build) |
 | `xflasher` source | host `so02j-src/` | NAS `src/` |
 | APK backups (175 MB) | host `backup-apks/` | NAS `backup-apks/` |
-| Hidden package list (145) | repo `docs/hidden-packages.txt` | host, NAS, device `/data/local/tmp/hidden.txt` |
+| Hidden package list (150) | repo `docs/hidden-packages.txt` | host, NAS, device `/data/local/tmp/hidden.txt` |
 
 The local clone originally lived in `/tmp`; it was moved to a persistent
 location so a reboot cannot wipe the only local git working copy.
@@ -54,7 +54,7 @@ packages were hidden. Always use the full `docs/hidden-packages.txt`.
 ## Verification after cleanup
 
 ```
-boot=1 ui=1 home=4 visible=268 total=413 svc=73 fatal=0
+boot=1 ui=1 home=4 visible=263 total=413 svc=73 fatal=0
 uid=0(root) gid=0(root) context=u:r:shell:s0
 hidden-packages.txt: identical SHA-1 in repo / host / NAS / device
 unhide-all.sh: refuses a stale short list; 63-package rollback drill

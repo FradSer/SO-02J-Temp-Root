@@ -69,7 +69,7 @@ Trying to disable the admin needs a reboot that drops the memory-only root,
 and `pm hide` itself needs no root, so the blocker is purely in the device
 policy layer.
 
-## Verified final state
+## Verified final state (historical snapshot of that pass)
 
 ```
 visible=268   hidden=145   total=413
