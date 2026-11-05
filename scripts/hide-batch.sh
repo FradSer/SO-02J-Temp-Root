@@ -7,11 +7,15 @@
 # Always run scripts/reboot-verify.sh after a batch. A passing health check
 # before a reboot does NOT prove the device will boot (see docs/recovery.md).
 set -u
-ROOT="$(cd "$(dirname "$0")/.." >/dev/null 2>&1 && pwd)"
+DIR="$(cd "$(dirname "$0")" >/dev/null 2>&1 && pwd)"
+ROOT="$(cd "$DIR/.." >/dev/null 2>&1 && pwd)"
 S=$(adb devices -l | awk '/product:SO-02J|model:SO_02J/ {print $1}' | head -1)
 if [ -z "$S" ]; then echo "ERROR: SO-02J not found"; exit 1; fi
 LIST=${1:?list file required}
-HID=${2:-$ROOT/docs/hidden-packages.txt}
+if [ -n "${2:-}" ]; then HID=$2
+elif [ -f "$ROOT/docs/hidden-packages.txt" ]; then HID=$ROOT/docs/hidden-packages.txt
+else HID="$DIR/hidden-packages.txt"
+fi
 [ -f "$LIST" ] || { echo "ERROR: list not found: $LIST"; exit 1; }
 touch "$HID"
 

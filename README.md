@@ -82,11 +82,12 @@ uid=0(root) gid=0(root) groups=0(root) context=u:r:shell:s0
 | `scripts/unhide-all.sh` | One-command full rollback of every hidden package |
 | `scripts/reboot-verify.sh` | Reboot and confirm boot completes; required after each batch |
 | `docs/recovery.md` | Over-debloat bootloop: symptoms, failed recovery attempts, FTF reflash procedure |
+| `docs/asset-layout.md` | Authoritative asset locations, recovery quick reference, cleanup decisions |
 | `scripts/restore-flash.sh` | Reflash the 19 stock `.sin` partitions in S1 Flashmode |
-| `scripts/flashoff.c` | Send S1 `CMD_FLASHMODE_OFF` to boot the phone without a button press after flashing (Linux host only — needs `linux/usbdevice_fs.h`).
-| `docs/restore-manifest.txt` | Per-user uninstalled packages and their APK paths |
+| `scripts/flashoff.c` | Send S1 `CMD_FLASHMODE_OFF` to boot the phone without a button press after flashing (Linux host only — needs `linux/usbdevice_fs.h`) |
+| `docs/restore-manifest.txt` | **Historical** — per-user uninstalled packages from the superseded `pm uninstall` method |
 | `docs/all-system-apks.txt` | Full preinstalled package/path inventory (text only) |
-| `scripts/debloat.sh` | Vetted package-list driver with a health check every 5 removals |
+| `scripts/debloat.sh` | **Historical** — `pm uninstall` driver. Do not use; replaced by `hide-batch.sh` |
 | `scripts/monitor-load.sh` | Two load/stability monitors, 12 samples each |
 
 Third-party binaries (`dirtycow`, `xflasher`, FTF archives) are **not**
