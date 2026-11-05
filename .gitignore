@@ -1,0 +1,25 @@
+# Never publish firmware, device dumps, keys or binaries.
+*.ftf
+*.img
+*.bin
+*.ta
+*.sin
+*.sinb
+*.zip
+*.gz
+*.xz
+*.7z
+TA*
+tadump*
+rootproof.txt
+*.log
+
+# Build artifacts / local scratch
+rootshell
+rootproof
+dirtycow
+*.o
+*.so
+*.a
+.DS_Store
+*.local
